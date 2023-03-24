@@ -7,7 +7,5 @@ class AddTaskUseCase {
 
   AddTaskUseCase({required this.repository});
 
-  Future<void> call(TaskModel task) async {
-    //return await repository.addTask(task);
-  }
+  void call(TaskModel task) => repository.addTask(task);
 }
