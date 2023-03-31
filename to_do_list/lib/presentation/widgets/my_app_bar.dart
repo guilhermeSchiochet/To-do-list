@@ -6,23 +6,23 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({Key? key, this.avatarImageUrl}) : super(key: key);
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight * 2);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight * 2.1);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: preferredSize.height,
       color: Theme.of(context).appBarTheme.backgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: SafeArea(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildSearchTextField(),
-            const SizedBox(width: 16),
+            const SizedBox(width: 10),
             _buildNotificationIcon(),
-            const SizedBox(width: 16),
-            _buildAvatar(),
+            const SizedBox(width: 10),
+            _buildAvatar(context),
           ],
         ),
       ),
@@ -34,15 +34,18 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Expanded(
       child: TextField(
         decoration: InputDecoration(
-          hintText: 'Pesquisar',
           filled: true,
-          fillColor: Colors.white,
+          hintText: 'Search taks...',
+          fillColor: Colors.grey.shade100,
           prefixIcon: const Icon(Icons.search, color: Colors.grey),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 24
+          ),
         ),
       ),
     );
@@ -50,18 +53,87 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// Cria um ícone de notificação.
   Widget _buildNotificationIcon() {
-    return const Icon(Icons.notifications, size: 28);
+    return IconButton(
+      onPressed: () {},
+      icon: const Icon(
+        Icons.notifications_none_rounded,
+        size: 33,
+      )
+    );
   }
 
-  /// Cria um widget de avatar com uma imagem de perfil ou um ícone padrão.
-  Widget _buildAvatar() {
+/// Cria um widget de avatar com uma imagem de perfil ou um ícone padrão.
+  Widget _buildAvatar(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
-      child: CircleAvatar(
-        backgroundColor: Colors.grey.shade300,
-        backgroundImage: avatarImageUrl != null ? NetworkImage(avatarImageUrl!) : null,// Se avatarImageUrl for nulo, o CircleAvatar mostrará o ícone padrão definido abaixo
-        radius: 24, 
-        child: avatarImageUrl == null ? const Icon(Icons.person, color: Colors.grey) : null,
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              contentPadding: const EdgeInsets.symmetric(vertical: 80.0),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _circleAvatar,
+                  const SizedBox(height: 20),
+                  const Text('Stark'),
+                  const SizedBox(height: 30),
+                  _elevatedButton('Configurações', height: 30, width: 180),
+                  const SizedBox(height: 20),
+                  _elevatedButton('Notificações', height: 30, width: 180),
+                  const SizedBox(height: 20),
+                  _elevatedButton('Como utilizar o app', height: 30, width: 180),
+                ],
+              ),
+            );
+          },
+        );
+      },
+      child: _circleAvatar
+    );
+  }
+
+  Widget get _circleAvatar {
+    return CircleAvatar(
+      radius: 27,
+      backgroundColor: Colors.grey.shade100,
+      backgroundImage: avatarImageUrl != null ? NetworkImage(avatarImageUrl!) : null,
+      child: avatarImageUrl == null ? const Icon(Icons.person, color: Colors.grey) : null,
+    );
+  }
+
+  Widget _elevatedButton(String name, {required double width, required double height}) {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ButtonStyle(
+        elevation: const MaterialStatePropertyAll(8.0),
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          )
+        ),
+        padding: const MaterialStatePropertyAll(
+          EdgeInsets.symmetric(
+            horizontal: 24.0,
+            vertical: 16.0
+          )
+        ),
+      ),
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Center(
+          child: Text(
+            name,
+            style: const TextStyle(
+              color: Colors.blueGrey,
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
     );
   }
