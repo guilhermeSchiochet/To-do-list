@@ -5,66 +5,82 @@ import 'package:to_do_list/presentation/widgets/priority_button.dart';
 import 'package:to_do_list/presentation/widgets/text_form_field_builder.dart';
 
 class AddTaskPage extends StatefulWidget {
-  final AddTaskUseCase addTaskUseCase;
 
-  const AddTaskPage({Key? key, required this.addTaskUseCase}) : super(key: key);
+  final bool readOnly;
+  final TaskModel? task;
+  final AddTaskUseCase? addTaskUseCase;
+
+  const AddTaskPage({
+    Key? key,
+    this.task,
+    this.addTaskUseCase,
+    this.readOnly = false,
+  }) : super(key: key);
 
   @override
   createState() => _AddTaskPageState();
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
 
-  TaskPriority _selectedPriority = TaskPriority.low;
+  late TaskPriority _selectedPriority;
+  late final TextEditingController _titleController;
+  late final TextEditingController _descriptionController;
+
+  @override
+  void initState() {
+    initFunctions();
+    super.initState();
+  }
+
+  // Inicializa controlers
+  void initFunctions() {
+    _titleController = TextEditingController(text: widget.task?.title ?? '');
+    _descriptionController = TextEditingController(text: widget.task?.description ?? '');
+    _selectedPriority = widget.task?.priority ?? TaskPriority.low;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar Tarefa'),
+        title: Text(
+          widget.readOnly ? 'Detalhes da Tarefa' : 'Adicionar Tarefa'
+        ),
       ),
       body: SingleChildScrollView(
         child: _buildBody(context)
       ),
-      floatingActionButton: Container(
-        margin: const EdgeInsets.only(top: 16.0),
-      child: _buildSaveButton(),
-    ),
+      floatingActionButton: widget.readOnly ? null : _buildSaveButton(),
     );
   }
 
-  /// Constrói o corpo da página.
   Widget _buildBody(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(18.0),
       child: Column(
         children: [
-          TextFormFieldBuilder(
-            title: 'Título',
-            controller: _titleController,
+          Column(
+            children: _campos,
           ),
-            const SizedBox(height: 16),
-          TextFormFieldBuilder(
-            title: 'Descrição',
-            maxLines: 5,
-            controller: _descriptionController,
-          ),
-            const SizedBox(height: 16),
-            _buildPrioritySection(),
+          const SizedBox(height: 16),
+          _buildPrioritySection(),
         ],
       ),
     );
   }
 
-  /// Constrói a seção de prioridade da tarefa.
   Widget _buildPrioritySection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Prioridade'),
+        const Text(
+          'Prioridade',
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         const SizedBox(height: 8),
         Row(
           children: _buildPriorityButtons(),
@@ -73,34 +89,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  /// Constrói a lista de botões de prioridade.
   List<Widget> _buildPriorityButtons() {
-    final buttons = <Widget>[];
-
-    for (final priority in TaskPriority.values) {
-      buttons.add(
-        Expanded(
-          flex: 1,
-          child: _buildPriorityButton(priority),
+    return TaskPriority.values.map((priority) => Expanded(
+      flex: 1,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: PriorityButton(
+          priority: priority,
+          isSelected: _selectedPriority == priority,
+          onTap: widget.readOnly ? null : (selectedPriority) => setState(() => _selectedPriority = selectedPriority),
         ),
-      );
-      if (priority != TaskPriority.high) {
-        buttons.add(const SizedBox(width: 8));
-      }
-    }
-    return buttons;
+      ),
+    )).toList();
   }
 
-  /// Constrói um botão de prioridade.
-  PriorityButton _buildPriorityButton(TaskPriority priority) {
-    return PriorityButton(
-      priority: priority,
-      isSelected: _selectedPriority == priority,
-      onTap: (selectedPriority) => setState(() => _selectedPriority = selectedPriority),
-    );
-  }
-
-  /// Constrói o botão de salvar a tarefa.
   Widget _buildSaveButton() {
     return SizedBox(
       width: double.infinity,
@@ -112,26 +114,36 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  /// Salva a tarefa e retorna para a tela anterior.
+  List<Widget> get _campos => [
+    TextFormFieldBuilder(
+      title: 'Título',
+      controller: _titleController,
+      readOnly: widget.readOnly,
+    ),
+    const SizedBox(height: 16),
+    TextFormFieldBuilder(
+      title: 'Descrição',
+      maxLines: 5,
+      controller: _descriptionController,
+      readOnly: widget.readOnly,
+    ),
+  ];
+
+  // Save file
   void _saveTask(BuildContext context) {
-
-    final title = _titleController.text;
-    final description = _descriptionController.text;
-
     final task = TaskModel(
       id: UniqueKey().toString(),
-      title: title,
-      description: description,
       priority: _selectedPriority,
+      title: _titleController.text,
+      description: _descriptionController.text,
     );
 
     try {
-      widget.addTaskUseCase.call(task);
+      widget.addTaskUseCase?.call(task);
     } catch (e) {
       throw 'Erro add';
-    } 
+    }
 
     Navigator.pop(context, task);
-    
   }
 }
