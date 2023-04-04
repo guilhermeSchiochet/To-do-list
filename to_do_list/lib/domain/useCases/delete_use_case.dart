@@ -6,7 +6,5 @@ class DeleteTaskUseCase {
 
   DeleteTaskUseCase({required this.repository});
 
-  Future<void> call(TaskModel task) async {
-    //return await repository.deleteTask(task);
-  }
+  void call(TaskModel task) => repository.deleteTask(task);
 }
