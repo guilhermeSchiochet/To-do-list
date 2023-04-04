@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TextFormFieldBuilder extends StatelessWidget {
-  
+
   final String title;
+  final int? maxLines;
+  final bool readOnly;
   final String? hintText;
   final String? errorText;
   final String? labelText;
-  final int? maxLines;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final void Function(String)? onChanged;
@@ -29,6 +30,7 @@ class TextFormFieldBuilder extends StatelessWidget {
     this.keyboardType,
     this.textInputAction,
     this.autovalidateMode,
+    this.readOnly = false,
     this.formatter = const [],
   }) : super(key: key);
 
@@ -40,14 +42,14 @@ class TextFormFieldBuilder extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 17,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),
         _getFormField
       ],
-    ); 
+    );
   }
 
   Widget get _getFormField {
@@ -59,6 +61,10 @@ class TextFormFieldBuilder extends StatelessWidget {
         errorText: errorText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: Colors.grey.shade400),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -73,6 +79,7 @@ class TextFormFieldBuilder extends StatelessWidget {
           borderSide: const BorderSide(color: Colors.red),
         ),
       ),
+      readOnly: readOnly,
       validator: validator,
       onChanged: onChanged,
       maxLines: maxLines,
