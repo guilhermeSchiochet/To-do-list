@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/domain/model/task_model.dart';
+import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 
 /// Botão de prioridade para a tela de adição de tarefas.
 class PriorityButton extends StatefulWidget {

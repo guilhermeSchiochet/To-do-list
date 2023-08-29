@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:to_do_list/domain/model/task_model.dart';
-import 'package:to_do_list/data/providers/database_provider.dart';
+import 'package:to_do_list/src/domain/model/task_model.dart';
+import 'package:to_do_list/src/data/providers/database_provider.dart';
 
 // TaskProvider class to manage Task-related database operations
 // Classe TaskProvider para gerenciar operações do banco de dados relacionadas às tarefas

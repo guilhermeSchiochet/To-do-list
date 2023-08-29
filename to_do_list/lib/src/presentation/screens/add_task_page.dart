@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/domain/model/task_model.dart';
-import 'package:to_do_list/domain/useCases/add_use_case.dart';
-import 'package:to_do_list/presentation/widgets/priority_button.dart';
-import 'package:to_do_list/presentation/widgets/text_form_field_builder.dart';
+import 'package:to_do_list/src/domain/model/task_model.dart';
+import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
+import 'package:to_do_list/src/presentation/widgets/priority_button.dart';
+import 'package:to_do_list/src/presentation/widgets/text_form_field_builder.dart';
+import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 
 class AddTaskPage extends StatefulWidget {
 

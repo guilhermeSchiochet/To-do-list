@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:to_do_list/domain/model/task_model.dart';
-import 'package:to_do_list/presentation/screens/add_task_page.dart';
+import 'package:to_do_list/src/domain/model/task_model.dart';
+import 'package:to_do_list/src/presentation/screens/add_task_page.dart';
+import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 
 class TaskListWidget extends StatelessWidget {
 

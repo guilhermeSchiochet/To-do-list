@@ -1,5 +1,5 @@
-import 'package:to_do_list/data/task_repository.dart';
-import 'package:to_do_list/domain/model/task_model.dart';
+import 'package:to_do_list/src/data/repositories/task_repository.dart';
+import 'package:to_do_list/src/domain/model/task_model.dart';
 
 
 class AddTaskUseCase {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list/presentation/screens/home_page.dart';
-import 'package:to_do_list/presentation/widgets/theme_app.dart';
-import 'package:to_do_list/domain/useCases/add_use_case.dart';
-import 'package:to_do_list/domain/useCases/delete_use_case.dart';
-import 'package:to_do_list/domain/useCases/update_use_case.dart';
+import 'package:to_do_list/src/config/themes/app_theme.dart';
+import 'package:to_do_list/src/presentation/screens/home_page.dart';
+import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
+import 'package:to_do_list/src/domain/useCases/delete_use_case.dart';
+import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
+import 'package:to_do_list/src/utils/constants/strings.dart';
 
 class App extends StatelessWidget {
   final AddTaskUseCase addTaskUseCase;
@@ -20,12 +21,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: appTitle,
       home: HomePage(
         addTaskUseCase: addTaskUseCase,
         deleteTaskUseCase: deleteTaskUseCase,
         updateTaskUseCase: updateTaskUseCase,
       ),
-      theme: ThemeApp.themeApp,
+      theme: AppTheme.light,
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,5 +1,5 @@
-import 'package:to_do_list/data/providers/task_provider.dart';
-import 'package:to_do_list/domain/model/task_model.dart';
+import 'package:to_do_list/src/data/providers/task_provider.dart';
+import 'package:to_do_list/src/domain/model/task_model.dart';
 
 /// TaskRepository is responsible for connecting use cases with the data providers.
 /// O TaskRepository é responsável por conectar os use cases com os provedores de dados.
