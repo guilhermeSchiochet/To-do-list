@@ -5,13 +5,13 @@ import 'package:to_do_list/src/presentation/widgets/priority_button.dart';
 import 'package:to_do_list/src/presentation/widgets/text_form_field_builder.dart';
 import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 
-class AddTaskPage extends StatefulWidget {
+class AddTaskScreen extends StatefulWidget {
 
   final bool readOnly;
   final TaskModel? task;
   final AddTaskUseCase? addTaskUseCase;
 
-  const AddTaskPage({
+  const AddTaskScreen({
     Key? key,
     this.task,
     this.addTaskUseCase,
@@ -19,10 +19,10 @@ class AddTaskPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  createState() => _AddTaskPageState();
+  createState() => _AddTaskScreenState();
 }
 
-class _AddTaskPageState extends State<AddTaskPage> {
+class _AddTaskScreenState extends State<AddTaskScreen> {
 
   late TaskPriority _selectedPriority;
   late final TextEditingController _titleController;

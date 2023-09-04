@@ -3,17 +3,17 @@ import 'package:to_do_list/src/domain/model/task_model.dart';
 import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/delete_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
-import 'package:to_do_list/src/presentation/screens/add_task_page.dart';
+import 'package:to_do_list/src/presentation/screens/add_task_screen.dart';
 import 'package:to_do_list/src/presentation/widgets/my_app_bar.dart';
 import 'package:to_do_list/src/presentation/widgets/task_list_widgets.dart';
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
 
   final AddTaskUseCase addTaskUseCase;
   final DeleteTaskUseCase deleteTaskUseCase;
   final UpdateTaskUseCase updateTaskUseCase;
 
-  const HomePage({
+  const HomeScreen({
     Key? key,
     required this.addTaskUseCase,
     required this.deleteTaskUseCase,
@@ -21,10 +21,10 @@ class HomePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  createState() => _HomePageState();
+  createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
 
   final ValueNotifier<List<TaskModel>> _tasksNotifier = ValueNotifier<List<TaskModel>>([]);
 
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddTaskPage(
+        builder: (context) => AddTaskScreen(
           addTaskUseCase: widget.addTaskUseCase,
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:to_do_list/src/domain/model/task_model.dart';
-import 'package:to_do_list/src/presentation/screens/add_task_page.dart';
+import 'package:to_do_list/src/presentation/screens/add_task_screen.dart';
 import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 
 class TaskListWidget extends StatelessWidget {
@@ -148,7 +148,7 @@ class TaskListWidget extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AddTaskPage(
+        builder: (context) => AddTaskScreen(
           task: task,
           readOnly: true
         ),

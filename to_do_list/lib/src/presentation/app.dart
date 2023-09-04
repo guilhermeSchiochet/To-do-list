@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/src/config/themes/app_theme.dart';
-import 'package:to_do_list/src/presentation/screens/home_page.dart';
+import 'package:to_do_list/src/presentation/screens/home_screen.dart';
 import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/delete_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
@@ -22,7 +22,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appTitle,
-      home: HomePage(
+      home: HomeScreen(
         addTaskUseCase: addTaskUseCase,
         deleteTaskUseCase: deleteTaskUseCase,
         updateTaskUseCase: updateTaskUseCase,
