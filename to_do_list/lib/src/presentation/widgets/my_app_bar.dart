@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? avatarImageUrl;
@@ -18,64 +23,204 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildSearchTextField(),
-            const SizedBox(width: 10),
-            _buildNotificationIcon(),
-            const SizedBox(width: 10),
-            _buildAvatar(context),
+            Text(
+              'Welcome!',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade700,
+              ),
+            ),
+            _circleAvatar(
+              context,
+              size: 27,
+              onTapDown: (TapDownDetails details) {
+                _showPopupMenu(details.globalPosition, context);
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-  /// Cria um campo de pesquisa estilizado semelhante ao da Play Store.
-  Widget _buildSearchTextField() {
-    return Expanded(
-      child: TextField(
-        decoration: InputDecoration(
-          filled: true,
-          hintText: 'Search taks...',
-          fillColor: Colors.grey.shade100,
-          prefixIcon: const Icon(Icons.search, color: Colors.grey),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 24
-          ),
+  void _showPopupMenu(Offset offset, context) async {
+    await showMenu(
+      context: context,
+      color: Colors.white,
+      position: const RelativeRect.fromLTRB(110, 50, 90, 20),
+      items: <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          enabled: false,
+          value: 'Desenvolvedor',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _circleAvatar(
+                context,
+                size: 70,
+                onTapDown: (c) {
+                  _showModalBottomSheet(context);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                title: const Text(
+                  'Configurações',
+                  textAlign: TextAlign.center,
+                ),
+                onTap: () {},
+              ),
+              Divider(
+                height: 0.5,
+                thickness: 0.5,
+                color: Colors.grey.shade800
+              ),
+              ListTile(
+                title: const Text(
+                  'Desenvolvedor',
+                  textAlign: TextAlign.center,
+
+                ),
+                onTap: () {},
+              ),
+            ],
+          )
         ),
-      ),
+      ],
+      elevation: 8.0,
     );
   }
 
-  /// Cria um ícone de notificação.
-  Widget _buildNotificationIcon() {
-    return IconButton(
-      onPressed: () {},
-      icon: const Icon(
-        Icons.notifications_none_rounded,
-        size: 33,
-      )
+  void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            top: 15,
+            bottom: 40
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  'Selecionar imagem',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade800
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      _pickImage(ImageSource.gallery);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Lottie.asset(
+                          'assets/json/gallery_animated.json',
+                          width: 120,
+                          height: 120,
+                          repeat: false,
+                        ),
+                        const Text(
+                          'Galeria',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _pickImage(ImageSource.camera);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Lottie.asset(
+                          'assets/json/camera_animated.json',
+                          width: 140,
+                          height: 120,
+                          repeat: false,
+                        ),
+                        const Text(
+                          'Câmera',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
-/// Cria um widget de avatar com uma imagem de perfil ou um ícone padrão.
-  Widget _buildAvatar(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: _circleAvatar
-    );
+
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      _saveImagePath(pickedFile.path);
+    }
   }
 
-  Widget get _circleAvatar {
-    return CircleAvatar(
-      radius: 27,
-      backgroundColor: Colors.grey.shade100,
-      backgroundImage: avatarImageUrl != null ? NetworkImage(avatarImageUrl!) : null,
-      child: avatarImageUrl == null ? const Icon(Icons.person, color: Colors.grey) : null,
+  Future<void> _saveImagePath(String imagePath) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('avatar_image_path', imagePath);
+    } catch (e) {
+      print('Erro ao salvar o caminho da imagem: $e');
+    }
+  }
+
+  Future<String?> _getImagePath() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('avatar_image_path');
+  }
+
+  Widget _circleAvatar(contextm, {required double size, void Function(TapDownDetails)? onTapDown}) {
+    return FutureBuilder<String?>(
+      future: _getImagePath(),
+      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return const CircularProgressIndicator();
+        // }
+          return GestureDetector(
+            onTapDown: onTapDown,
+            child: CircleAvatar(
+              radius: size,
+              backgroundColor: Colors.grey.shade100,
+              backgroundImage: snapshot.data != null ? FileImage(File(snapshot.data!)) : null,
+              child: snapshot.data == null ? const Icon(Icons.person, color: Colors.grey) : null,
+            )
+          );
+      },
     );
   }
 
