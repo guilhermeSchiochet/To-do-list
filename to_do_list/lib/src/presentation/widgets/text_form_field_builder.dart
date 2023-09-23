@@ -64,7 +64,7 @@ class TextFormFieldBuilder extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: Colors.grey.shade400),
+          borderSide: BorderSide(color: Colors.grey.shade200),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -85,6 +85,7 @@ class TextFormFieldBuilder extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: keyboardType,
       inputFormatters: formatter,
+
       textInputAction: textInputAction,
       autovalidateMode: autovalidateMode ?? AutovalidateMode.onUserInteraction,
     );
