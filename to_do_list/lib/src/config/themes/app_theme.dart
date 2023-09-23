@@ -9,7 +9,7 @@ abstract class AppTheme {
         elevation: 0,
         color: Colors.white,
       ),
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: Colors.grey.shade50,
       primaryColor: Colors.black,
       splashColor: Colors.transparent,
       fontFamily: 'IBM',
