@@ -53,6 +53,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: _buildBody(context)
       ),
       floatingActionButton: widget.readOnly ? null : _buildSaveButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }
 
@@ -105,12 +107,29 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Widget _buildSaveButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 48,
-      child: ElevatedButton(
-        onPressed: () => _saveTask(context),
-        child: const Text('Salvar'),
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: SizedBox(
+        width: (MediaQuery.of(context).size.width / 2),
+        height: 48,
+        child: ElevatedButton(
+          onPressed: () => _saveTask(context),
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(Colors.grey.shade50),
+            elevation: const MaterialStatePropertyAll(7),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          child: const Text(
+            'Salvar',
+            style: TextStyle(
+              color: Colors.grey
+            ),
+          ),
+        ),
       ),
     );
   }
