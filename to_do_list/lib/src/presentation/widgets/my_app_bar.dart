@@ -1,8 +1,7 @@
 import 'dart:io';
-
+import 'package:lottie/lottie.dart'; 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -45,50 +44,46 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void _showPopupMenu(Offset offset, context) async {
+
     await showMenu(
       context: context,
       color: Colors.white,
       position: const RelativeRect.fromLTRB(110, 50, 90, 20),
       items: <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
-          enabled: false,
-          value: 'Desenvolvedor',
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _circleAvatar(
-                context,
-                size: 70,
-                onTapDown: (c) {
-                  _showModalBottomSheet(context);
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                title: const Text(
-                  'Configurações',
-                  textAlign: TextAlign.center,
+            enabled: false,
+            value: 'Desenvolvedor',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _circleAvatar(
+                  context,
+                  size: 70,
+                  onTapDown: (c) {
+                    _showModalBottomSheet(context);
+                  },
                 ),
-                onTap: () {},
-              ),
-              Divider(
-                height: 0.5,
-                thickness: 0.5,
-                color: Colors.grey.shade800
-              ),
-              ListTile(
-                title: const Text(
-                  'Desenvolvedor',
-                  textAlign: TextAlign.center,
-
+                const SizedBox(
+                  height: 10,
                 ),
-                onTap: () {},
-              ),
-            ],
-          )
-        ),
+                ListTile(
+                  title: const Text(
+                    'Configurações',
+                    textAlign: TextAlign.center,
+                  ),
+                  onTap: () {},
+                ),
+                Divider(
+                    height: 0.5, thickness: 0.5, color: Colors.grey.shade800),
+                ListTile(
+                  title: const Text(
+                    'Desenvolvedor',
+                    textAlign: TextAlign.center,
+                  ),
+                  onTap: () {},
+                ),
+              ],
+            )),
       ],
       elevation: 8.0,
     );
@@ -100,10 +95,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       useSafeArea: true,
       builder: (BuildContext context) {
         return Padding(
-          padding: const EdgeInsets.only(
-            top: 15,
-            bottom: 40
-          ),
+          padding: const EdgeInsets.only(top: 15, bottom: 40),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -114,10 +106,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   'Selecionar imagem',
                   textAlign: TextAlign.right,
                   style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade800
-                  ),
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey.shade800),
                 ),
               ),
               Row(
@@ -140,9 +131,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                         const Text(
                           'Galeria',
                           style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500
-                          ),
+                              fontSize: 17, fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
@@ -164,9 +153,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                         const Text(
                           'Câmera',
                           style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500
-                          ),
+                              fontSize: 17, fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
@@ -179,7 +166,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       },
     );
   }
-
 
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -195,7 +181,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('avatar_image_path', imagePath);
     } catch (e) {
-      print('Erro ao salvar o caminho da imagem: $e');
+      throw 'Erro ao salvar o caminho da imagem: $e';
     }
   }
 
@@ -204,24 +190,20 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return prefs.getString('avatar_image_path');
   }
 
-  Widget _circleAvatar(contextm, {required double size, void Function(TapDownDetails)? onTapDown}) {
-    return FutureBuilder<String?>(
+  Widget _circleAvatar(context, {required double size, void Function(TapDownDetails)? onTapDown}) {
+    return FutureBuilder(
       future: _getImagePath(),
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-        // if (snapshot.connectionState == ConnectionState.waiting) {
-        //   return const CircularProgressIndicator();
-        // }
-          return GestureDetector(
-            onTapDown: onTapDown,
-            child: CircleAvatar(
-              radius: size,
-              backgroundColor: Colors.grey.shade100,
-              backgroundImage: snapshot.data != null ? FileImage(File(snapshot.data!)) : null,
-              child: snapshot.data == null ? const Icon(Icons.person, color: Colors.grey) : null,
-            )
-          );
+        return GestureDetector(
+          onTapDown: onTapDown,
+          child: CircleAvatar(
+            radius: size,
+            backgroundColor: Colors.grey.shade100,
+            backgroundImage: snapshot.data != null ? FileImage(File(snapshot.data!)) : null,
+            child: snapshot.data == null ? const CircularProgressIndicator() : null,
+          )
+        );
       },
     );
   }
-
 }
