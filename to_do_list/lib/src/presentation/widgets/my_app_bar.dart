@@ -106,9 +106,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   'Selecionar imagem',
                   textAlign: TextAlign.right,
                   style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade800),
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade800
+                  ),
                 ),
               ),
               Row(
@@ -131,7 +132,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                         const Text(
                           'Galeria',
                           style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w500),
+                            fontSize: 17, fontWeight: FontWeight.w500
+                          ),
                         )
                       ],
                     ),
@@ -153,7 +155,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                         const Text(
                           'Câmera',
                           style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w500),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500
+                          ),
                         )
                       ],
                     ),
