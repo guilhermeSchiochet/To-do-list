@@ -4,21 +4,18 @@ import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/delete_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
 import 'package:to_do_list/src/presentation/screens/add_task_screen.dart';
+import 'package:to_do_list/src/presentation/widgets/card_projects.dart';
 import 'package:to_do_list/src/presentation/widgets/my_app_bar.dart';
 import 'package:to_do_list/src/presentation/widgets/task_list_widgets.dart';
+import 'package:to_do_list/src/utils/extensions/colors_extension.dart';
+import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 
 class HomeScreen extends StatefulWidget {
-
   final AddTaskUseCase addTaskUseCase;
   final DeleteTaskUseCase deleteTaskUseCase;
   final UpdateTaskUseCase updateTaskUseCase;
 
-  const HomeScreen({
-    Key? key,
-    required this.addTaskUseCase,
-    required this.deleteTaskUseCase,
-    required this.updateTaskUseCase,
-  }) : super(key: key);
+  const HomeScreen({super.key, required this.addTaskUseCase, required this.deleteTaskUseCase, required this.updateTaskUseCase});
 
   @override
   createState() => _HomeScreenState();
@@ -73,7 +70,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       return const Center(child: Text('Nenhuma tarefa encontrada.'));
     } else {
       return TaskListWidget(
-        tasks: tasks,
+        tasks: [
+            TaskModel(
+              id: 'teste',
+              title: 'Video Player Design',
+              description: 'Ckeck task with all',
+              priority: TaskPriority.high
+            ),
+            TaskModel(
+              id: 'teste1',
+              title: 'Admin Panel Design',
+              description: 'Create a design for the admin panel',
+              priority: TaskPriority.medium
+            ),
+            TaskModel(
+              id: 'teste3',
+              title: 'Buying Spotyfy and Apple Music premium',
+              priority: TaskPriority.low
+            ),
+        ],
         onUpdate: onUpdate,
         onDelete: onDelete,
       );
@@ -84,18 +99,89 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget _getTaskTabsWidget(List<TaskModel> tasks) {
     return Column(
       children: [
-        TabBar(
-          controller: _tabController,
-          labelColor: Colors.black,
-          indicatorColor: Colors.grey,
-          dividerColor: Colors.transparent,
-          onTap: (v) =>_valueValidate.value = v,
+        // TabBar(
+        //   controller: _tabController,
+        //   labelColor: Colors.black,
+        //   indicatorColor: Colors.grey,
+        //   dividerColor: Colors.transparent,
+        //   onTap: (v) =>_valueValidate.value = v,
           
-          unselectedLabelColor: Colors.grey.shade700,
-          overlayColor: const MaterialStatePropertyAll(Colors.transparent),
-          tabs: const [
-            Tab(text: 'Em Progresso'),
-            Tab(text: 'Concluído')
+        //   unselectedLabelColor: Colors.grey.shade700,
+        //   overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+        //   tabs: const [
+        //     Tab(text: 'Em Progresso'),
+        //     Tab(text: 'Concluído')
+        //   ],
+        // ),
+         Row(
+          children: [
+            Text(
+              'Projects',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 65, 63, 63),
+                fontSize: 18,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              'View All',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CardProjects(
+              title: 'Contest Design',
+              subtitle: 'Redesign and test',
+              icon: Icons.emoji_objects_outlined,
+              progress: 4,
+              totalTasks: 10,
+              color: Colors.orange,
+            ),
+            CardProjects(
+              title: 'App Design',
+              subtitle: 'Design and test',
+              icon: Icons.design_services_outlined,
+              progress: 2,
+              totalTasks: 10,
+              color: Colors.blue,
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            Text(
+              'Today Tasks',
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: const Color.fromARGB(255, 65, 63, 63),
+                fontSize: 18,
+              ),
+            ),
+            const Spacer(),
+            Row(
+              children: [
+                Text(
+                  'Priority',
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 65, 63, 63),
+                    fontSize: 16,
+                  ),
+                ),
+                Icon(Icons.keyboard_arrow_down_rounded)
+              ],
+            ),
           ],
         ),
         const SizedBox(
@@ -117,11 +203,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   /// Retorna o widget que exibe a lista de tarefas baseado na lista de tarefas passada
   Widget _getTaskList() {
-    return ValueListenableBuilder<List<TaskModel>>(
-      valueListenable: _tasksNotifier,
-      builder: (context, tasks, child) {
-        return _getTaskTabsWidget(tasks);
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: ValueListenableBuilder<List<TaskModel>>(
+        valueListenable: _tasksNotifier,
+        builder: (context, tasks, child) {
+          return _getTaskTabsWidget(tasks);
+        },
+      ),
     );
   }
 
