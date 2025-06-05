@@ -12,11 +12,11 @@ class AddTaskScreen extends StatefulWidget {
   final AddTaskUseCase? addTaskUseCase;
 
   const AddTaskScreen({
-    Key? key,
+    super.key,
     this.task,
     this.addTaskUseCase,
     this.readOnly = false,
-  }) : super(key: key);
+  });
 
   @override
   createState() => _AddTaskScreenState();
@@ -115,9 +115,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: ElevatedButton(
           onPressed: () => _saveTask(context),
           style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.grey.shade50),
-            elevation: const MaterialStatePropertyAll(7),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            backgroundColor: WidgetStatePropertyAll(Colors.grey.shade50),
+            elevation: const WidgetStatePropertyAll(7),
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

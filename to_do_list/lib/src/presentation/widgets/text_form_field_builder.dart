@@ -18,7 +18,7 @@ class TextFormFieldBuilder extends StatelessWidget {
   final FormFieldValidator<String>? validator;
 
   const TextFormFieldBuilder({
-    Key? key,
+    super.key,
     this.maxLines,
     this.errorText,
     this.labelText,
@@ -32,7 +32,7 @@ class TextFormFieldBuilder extends StatelessWidget {
     this.autovalidateMode,
     this.readOnly = false,
     this.formatter = const [],
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

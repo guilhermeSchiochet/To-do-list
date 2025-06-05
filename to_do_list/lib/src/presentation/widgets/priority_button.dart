@@ -14,11 +14,11 @@ class PriorityButton extends StatefulWidget {
 
   /// Cria um novo botão de prioridade.
   const PriorityButton({
-    Key? key,
+    super.key,
     required this.priority,
     this.isSelected = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   createState() => _PriorityButtonState();
@@ -43,7 +43,7 @@ class _PriorityButtonState extends State<PriorityButton> {
       curve: Curves.easeOut,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: widget.isSelected ? widget.priority.color.withOpacity(1.0) : widget.priority.color.withOpacity(0.8),
+        color: widget.isSelected ? widget.priority.color.withValues(alpha: 1.0) : widget.priority.color.withValues(alpha: 0.8),
       ),
       child: _buildContent(),
     );
@@ -63,7 +63,7 @@ class _PriorityButtonState extends State<PriorityButton> {
         Text(
           widget.priority.toShortString(),
           style: TextStyle(
-            color: Colors.white.withOpacity(widget.isSelected ? 1.0 : 0.8),
+            color: Colors.white.withValues(alpha: widget.isSelected ? 1.0 : 0.8),
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),

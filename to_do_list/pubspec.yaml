@@ -10,20 +10,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  lottie: ^2.6.0
+  lottie: ^3.3.1
   sqflite: ^2.2.6
   provider: ^6.0.5
   image_picker: ^1.0.2
   path_provider: ^2.1.1
   shared_preferences: ^2.2.1
   cupertino_icons: ^1.0.2
-  flutter_slidable: ^2.0.0
-  flutter_launcher_icons: "^0.12.0"
+  flutter_slidable: ^4.0.0
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
