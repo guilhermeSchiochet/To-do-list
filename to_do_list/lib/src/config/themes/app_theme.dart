@@ -9,7 +9,6 @@ abstract class AppTheme {
         elevation: 0,
         color: Colors.white,
       ),
-      scaffoldBackgroundColor: Colors.grey.shade50,
       primaryColor: Colors.black,
       splashColor: Colors.transparent,
       fontFamily: 'IBM',
@@ -26,7 +25,6 @@ abstract class AppTheme {
           800: Colors.white,
           900: Colors.white,
         }),
-        backgroundColor: Colors.white, // cor de fundo do seu aplicativo
         errorColor: Colors.red, // cor de erro do seu aplicativo
       ),
     );
