@@ -7,11 +7,11 @@ extension TaskPriorityExtension on TaskPriority {
   String toShortString() {
     switch (this) {
       case TaskPriority.low:
-        return 'Baixa';
+        return 'Low';
       case TaskPriority.medium:
-        return 'Média';
+        return 'Med';
       case TaskPriority.high:
-        return 'Alta';
+        return 'High';
       default:
         return '';
     }
