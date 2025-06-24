@@ -23,16 +23,13 @@ class TaskListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       itemCount: tasks.length,
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return _buildTaskItem(context, task);
+        return _buildTaskTile(context, task);
       },
       separatorBuilder: (context, index) => const SizedBox(height: 12),
     );
-  }
-
-  Widget _buildTaskItem(BuildContext context, TaskModel task) {
-    return _buildTaskTile(context, task);
   }
 
   Widget _buildTaskTile(BuildContext context, TaskModel task) {
@@ -98,9 +95,11 @@ class TaskListWidget extends StatelessWidget {
                         const SizedBox(height: 10),
                         Row(
                           children: [
-                            _buildInfoStatus(color: Colors.green),
+                            _buildInfoStatus(color: Colors.orangeAccent),
                             SizedBox(width: 4),
-                            _buildInfoStatus(color: Colors.pink),
+                            _buildInfoStatus(color: Colors.purple),
+                            SizedBox(width: 4),
+                            _buildInfoStatus(color: Colors.blue),
                           ],
                         )
                       ],
@@ -127,7 +126,7 @@ class TaskListWidget extends StatelessWidget {
     return _baseBuild(
       padding: EdgeInsetsGeometry.symmetric(horizontal: 10, vertical: 4.0),
       text: "#Task",
-      color: color.lighten(40),
+      color: color.withAlphaPercent(0.2),
       colorText: color
     );
   }
@@ -143,6 +142,7 @@ class TaskListWidget extends StatelessWidget {
   Widget _baseBuild({required EdgeInsetsGeometry padding, required String text, required Color color, Color colorText = Colors.white}) {
     return Card(
       color: color,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.transparent),
         borderRadius: BorderRadius.circular(10),
@@ -156,101 +156,6 @@ class TaskListWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
             fontSize: 12,
           ),  
-        ),
-      ),
-    );
-  }
-
-  /// Cria um ListTile para a tarefa com ações de clique e segurar.
-  Widget _buildTaskTile2(BuildContext context, TaskModel task) {
-    return ListTile(
-      style: ListTileStyle.list,
-      title: Row(
-        children: [
-          _buildPriorityIcon(task),
-          const SizedBox(width: 8),
-          Text(task.title),
-        ],
-      ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if(task.description != null) Text(
-            task.description!,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          _buildTaskStatus(task),
-        ],
-      ),
-      leading: task.isCompleted ? CircleAvatar(
-        backgroundColor: Colors.green.withValues(alpha: 0.2),
-        child: const Align(
-          alignment: Alignment.center,
-          child: Text(
-            'C',
-            style: TextStyle(
-              color: Colors.green, 
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ) : Checkbox(
-        value: task.isCompleted,
-        onChanged: (bool? value) {
-          onUpdate!(task.copyWith(isCompleted: value!));
-        },
-      ),
-      trailing: showActions ? null : IconButton(
-        icon: const Icon(Icons.delete),
-        onPressed: () => onDelete!(task),
-      ),
-      onTap: () => _openTaskDetails(context, task)
-    );
-  }
-
-
-  /// Cria um indicador de status para a tarefa.
-  Widget _buildTaskStatus(TaskModel task) {
-    String statusText;
-    Color statusColor;
-
-    if (task.isCompleted) {
-      statusText = 'Concluído';
-      statusColor = Colors.green;
-    } else {
-      statusText = 'Pendente';
-      statusColor = Colors.red;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-      decoration: BoxDecoration(
-        color: statusColor.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        statusText,
-        style: TextStyle(color: statusColor, fontSize: 12),
-      ),
-    );
-  }
-
-  /// Cria um ícone de prioridade colorido com base na prioridade da tarefa.
-  Widget _buildPriorityIcon(TaskModel task) {
-    return Icon(
-      Icons.label,
-      color: task.priority.color,
-    );
-  }
-
-  void _openTaskDetails(BuildContext context, TaskModel task) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddTaskScreen(
-          task: task,
-          readOnly: true
         ),
       ),
     );
