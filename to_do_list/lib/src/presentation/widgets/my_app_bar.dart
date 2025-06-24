@@ -15,7 +15,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       height: preferredSize.height,
       color: Theme.of(context).appBarTheme.backgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: SafeArea(
         child: Stack(
           children: [
