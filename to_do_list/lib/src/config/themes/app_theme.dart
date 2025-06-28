@@ -44,4 +44,10 @@ abstract class AppTheme {
       colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black),
     );
   }
+
+  /// Utilizar em icones 
+  static const Color cinzaEscuro = Color.fromARGB(255, 93, 90, 90);
+  
+  /// Utilizar em titulos
+  static const Color tituloPreto = Color.fromARGB(255, 34, 33, 33);
 }
