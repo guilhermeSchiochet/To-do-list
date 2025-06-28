@@ -22,7 +22,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appTitle,
-      home: HomeScreen(
+      home: HomeScreenView(
         addTaskUseCase: addTaskUseCase,
         deleteTaskUseCase: deleteTaskUseCase,
         updateTaskUseCase: updateTaskUseCase,
