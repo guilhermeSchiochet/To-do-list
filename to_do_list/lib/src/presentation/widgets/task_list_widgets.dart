@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/src/domain/model/task_model.dart';
-import 'package:to_do_list/src/presentation/screens/add_task_screen.dart';
 import 'package:to_do_list/src/utils/extensions/colors_extension.dart';
 import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 
 class TaskListWidget extends StatelessWidget {
-
+  /// Utilizado na [HomeScreenView] para demostrar somente um preview da lista. Irá demostrar os quatros (4) primeiros itens da lista.
+  final bool isPreview;
+  
   final bool showActions;
   final List<TaskModel> tasks;
   final Function(TaskModel)? onUpdate;
@@ -16,16 +17,19 @@ class TaskListWidget extends StatelessWidget {
     this.onUpdate,
     this.onDelete,
     required this.tasks,
+    this.isPreview = false,
     this.showActions = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: tasks.length,
       shrinkWrap: true,
+      itemCount:  isPreview ? 3 : tasks.length,
+      physics: isPreview ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
       itemBuilder: (context, index) {
         final task = tasks[index];
+
         return _buildTaskTile(context, task);
       },
       separatorBuilder: (context, index) => const SizedBox(height: 12),
