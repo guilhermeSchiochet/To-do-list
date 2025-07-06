@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:animations/animations.dart';
 
 class MyBottomBar extends StatelessWidget {
   final int selectedIndex;
@@ -24,23 +25,37 @@ class MyBottomBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _iconButton(LucideIcons.home, 0),
-          _iconButton(LucideIcons.calendar, 1),
+          _animatedIconButton(LucideIcons.home, 0),
+          _animatedIconButton(LucideIcons.calendar, 1),
           _centerButton(context),
-          _iconButton(LucideIcons.listTodo, 3),
-          _iconButton(LucideIcons.user, 4),
+          _animatedIconButton(LucideIcons.listTodo, 3),
+          _animatedIconButton(LucideIcons.user, 4),
         ],
       ),
     );
   }
 
-  Widget _iconButton(IconData icon, int index) {
-    return IconButton(
-      icon: Icon(
-        icon,
-        color: selectedIndex == index ? Colors.blue : Colors.grey,
+  Widget _animatedIconButton(IconData icon, int index) {
+    final isSelected = selectedIndex == index;
+
+    return GestureDetector(
+      onTap: () => onTap?.call(index),
+      child: FadeScaleTransition(
+        animation: AlwaysStoppedAnimation(1.0),
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 400),
+          padding: EdgeInsets.all(isSelected ? 16 : 12),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            icon,
+            color: isSelected ? Colors.blue : Colors.grey,
+            size: isSelected ? 28 : 24,
+          ),
+        ),
       ),
-      onPressed: () => onTap?.call(index),
     );
   }
 
