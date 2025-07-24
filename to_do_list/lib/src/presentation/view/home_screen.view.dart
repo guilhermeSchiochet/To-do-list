@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list/src/config/themes/app_theme.dart';
 import 'package:to_do_list/src/domain/model/task_model.dart';
 import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/delete_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
 import 'package:to_do_list/src/presentation/controller/home_screen.controller.dart';
-import 'package:to_do_list/src/presentation/screens/add_task_screen.dart';
-import 'package:to_do_list/src/presentation/widgets/card_projects.dart';
 import 'package:to_do_list/src/presentation/widgets/my_app_bar.dart';
+import 'package:to_do_list/src/presentation/widgets/my_button_bar.dart';
+import 'package:animations/animations.dart';
 import 'package:to_do_list/src/presentation/widgets/task_list_widgets.dart';
-import 'package:to_do_list/src/utils/extensions/colors_extension.dart';
-import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
-
-class HomeScreen extends StatefulWidget {
+class HomeScreenView extends StatefulWidget {
   final AddTaskUseCase addTaskUseCase;
   final DeleteTaskUseCase deleteTaskUseCase;
   final UpdateTaskUseCase updateTaskUseCase;
 
-  const HomeScreen({super.key, required this.addTaskUseCase, required this.deleteTaskUseCase, required this.updateTaskUseCase});
+  const HomeScreenView({super.key, required this.addTaskUseCase, required this.deleteTaskUseCase, required this.updateTaskUseCase});
 
   @override
   createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreenView> with SingleTickerProviderStateMixin {
 
   final HomeScreenController _controller = HomeScreenController.instance;
 
@@ -36,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   Future<void> _loadTasks() async {
     final tasks = await widget.addTaskUseCase.repository.getAllTasks();
-    _tasksNotifier.value = tasks;
+    _tasksNotifier.value = _controller.tasks;
   }
 
   @override
@@ -44,31 +42,51 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return Scaffold(
       appBar: _appBar(),
       body: _conteudo(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buttonBar(),
     );
   }
   
   MyAppBar _appBar() =>  const MyAppBar();
+
+  Widget _buttonBar() {
+    return ValueListenableBuilder(
+      valueListenable: _controller.selectedIndex,
+      builder: (context, value, child) => MyBottomBar(
+        selectedIndex: _controller.selectedIndex.value,
+        onTap: (index) => _controller.selectedIndex.value = index
+      ),
+    );
+  }
 
   /// Retorna o widget que representa o conteúdo principal da tela
   Widget _conteudo() {
     return ValueListenableBuilder<List<TaskModel>>(
       valueListenable: _tasksNotifier,
       builder: (context, tasks, child) {
-        return _getTaskTabsWidget(tasks);
+        return Column(
+          children: [
+            const SizedBox(height: 30),
+            _builderListProjects(),
+            const SizedBox(height: 30),
+            Expanded(
+              child: _buildTaskListWidget(tasks),
+            ),
+          ],
+        );
       },
     );
   }
 
-  /// Retorna o widget da lista de tarefas baseado na lista de tarefas passada
   Widget _buildTaskListWidget(List<TaskModel> tasks) {
     if (tasks.isEmpty) {
-      return const Center(child: Text('Nenhuma tarefa encontrada.'));
+      return const Center(
+        child: Text('Nenhuma tarefa encontrada.'),
+      );
     } else {
       return Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
-          spacing: 15,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -82,40 +100,46 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ),
                 const Spacer(),
                 Row(
-                  children: [
+                  children: const [
                     Text(
                       'Priority',
                       style: TextStyle(
-                        color: const Color.fromARGB(255, 65, 63, 63),
+                        color: Color.fromARGB(255, 65, 63, 63),
                         fontSize: 16,
                       ),
                     ),
-                    Icon(Icons.keyboard_arrow_down_rounded)
+                    Icon(Icons.keyboard_arrow_down_rounded),
                   ],
                 ),
               ],
             ),
+            const SizedBox(height: 15),
             TaskListWidget(
               tasks: tasks,
+              isPreview: true,
+              showActions: true,
             ),
-          ]
+            Align(
+              child: GestureDetector(
+                onTap: () {
+                  // Adicione aqui a ação ao clicar em "View All"
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15.0, top: 8.0),
+                  child: Text(
+                    'View All',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       );
     }
-  }
-
-  /// Retorna o widget que contém as tabs das tarefas pendentes e concluídas
-  Widget _getTaskTabsWidget(List<TaskModel> tasks) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          _builderListProjects(),
-          _buildTaskListWidget(tasks)
-        ]
-      ),
-    );
   }
 
   Widget _builderListProjects() {
@@ -128,8 +152,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               Text(
                 'Projects',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 65, 63, 63),
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.tituloPreto,
                   fontSize: 18,
                 ),
               ),
@@ -153,8 +177,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           child: SizedBox(
             height: 200,
             child: ListView.separated(
-              itemCount: _controller.cardProject.length,
               scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: _controller.cardProject.length,
               separatorBuilder: (context, index) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
                 return _controller.cardProject[index];
@@ -165,6 +190,4 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ]
     );
   }
-
-
 }
