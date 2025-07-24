@@ -10,6 +10,8 @@ class HomeScreenController {
 
   static HomeScreenController get instance => _instance;
 
+  final ValueNotifier<int> selectedIndex = ValueNotifier<int>(0);
+
   List<CardProjects> get cardProject {
     return [
       CardProjects(
@@ -40,6 +42,40 @@ class HomeScreenController {
   }
 
   List<TaskModel> get tasks => [
+    TaskModel(
+      id: 'teste',
+      title: 'Video Player Design',
+      description: 'Ckeck task with all',
+      priority: TaskPriority.high
+    ),
+    TaskModel(
+      id: 'teste1',
+      title: 'Admin Panel Design',
+      description: 'Create a design for the admin panel',
+      priority: TaskPriority.medium
+    ),
+    TaskModel(
+      id: 'teste3',
+      title: 'Buying Spotyfy and Apple Music premium',
+      priority: TaskPriority.low
+    ),
+    TaskModel(
+      id: 'teste',
+      title: 'Video Player Design',
+      description: 'Ckeck task with all',
+      priority: TaskPriority.high
+    ),
+    TaskModel(
+      id: 'teste1',
+      title: 'Admin Panel Design',
+      description: 'Create a design for the admin panel',
+      priority: TaskPriority.medium
+    ),
+    TaskModel(
+      id: 'teste3',
+      title: 'Buying Spotyfy and Apple Music premium',
+      priority: TaskPriority.low
+    ),
     TaskModel(
       id: 'teste',
       title: 'Video Player Design',
