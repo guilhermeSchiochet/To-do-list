@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:to_do_list/src/config/themes/app_theme.dart';
+import 'package:intl/intl.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? avatarImageUrl;
@@ -17,18 +18,27 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       height: preferredSize.height,
       color: Theme.of(context).appBarTheme.backgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       child: SafeArea(
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              dataFormatada,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: AppTheme.cinzaUmPoucoMenosEscuro,
+              ),
+            ),
             Center(
               child: Row(
                 children: [
                   Text(
-                    'Welcome back!',
+                    'Today',
                     style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
                       color: AppTheme.tituloPreto,
                     ),
                   ),
@@ -37,17 +47,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   const SizedBox(width: 10),
                   _buildIconNotification(),
                 ],
-              ),
-            ),
-            Positioned(
-              left: 8,
-              top: screenHeight * 0.45,
-              child: Text(
-                '2 tasks pending',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: AppTheme.cinzaEscuro,
-                ),
               ),
             ),
           ],
@@ -63,17 +62,17 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(
             LucideIcons.bell,
-            size: 30,
+            size: 22,
             color: AppTheme.cinzaEscuro,
           ),
           onPressed: () {},
         ),
         Positioned(
-          top: 14,
-          right: 14,
+          top: 6,
+          right: 12,
           child: Container(
-            width: 8,
-            height: 8,
+            width: 4,
+            height: 4,
             decoration: const BoxDecoration(
               color: Colors.red,
               shape: BoxShape.circle,
@@ -88,10 +87,19 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return IconButton(
       icon: const Icon(
         LucideIcons.search,
-        size: 30,
-        color: AppTheme.cinzaEscuro,
+        size: 22,
+        color: AppTheme.primaryColor,
       ),
       onPressed: () {},
     );
   }
+
+  static String get dataFormatada {
+    DateTime agora = DateTime.now();
+
+    String formato = DateFormat('EEEE, MMM d', 'en_US').format(agora);
+    
+    return formato.toUpperCase();
+  }
+
 }

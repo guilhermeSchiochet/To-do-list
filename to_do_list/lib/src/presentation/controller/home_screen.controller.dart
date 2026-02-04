@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/src/domain/model/task_model.dart';
-import 'package:to_do_list/src/presentation/widgets/card_projects.dart';
 import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 
 class HomeScreenController {
@@ -11,35 +10,6 @@ class HomeScreenController {
   static HomeScreenController get instance => _instance;
 
   final ValueNotifier<int> selectedIndex = ValueNotifier<int>(0);
-
-  List<CardProjects> get cardProject {
-    return [
-      CardProjects(
-        title: 'Contest Design',
-        subtitle: 'Redesign and test',
-        icon: Icons.emoji_objects_outlined,
-        progress: 4,
-        totalTasks: 10,
-        color: Colors.orange,
-      ),
-      CardProjects(
-        color: Colors.blue,
-        icon: Icons.design_services_outlined,
-        progress: 3,
-        totalTasks: 10,
-        title: 'Design System',
-        subtitle: 'Create and test',
-      ),
-      CardProjects(
-        color: Colors.green,
-        icon: Icons.code_outlined,
-        progress: 2,
-        totalTasks: 10,
-        title: 'Code Review',
-        subtitle: 'Review and test',
-      ),  
-    ];
-  }
 
   List<TaskModel> get tasks => [
     TaskModel(

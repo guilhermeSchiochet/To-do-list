@@ -4,6 +4,7 @@ import 'package:to_do_list/src/data/repositories/task_repository.dart';
 import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/delete_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() {
 
@@ -15,10 +16,16 @@ void main() {
   final updateTaskUseCase = UpdateTaskUseCase(repository: taskRepository);
 
   runApp(
-    App(
-      addTaskUseCase: addTaskUseCase,
-      deleteTaskUseCase: deleteTaskUseCase,
-      updateTaskUseCase: updateTaskUseCase,
-    )
+    DevicePreview(
+      enabled: true,
+      tools: const [
+        ...DevicePreview.defaultTools,
+      ],
+      builder: (context) => App(
+        addTaskUseCase: addTaskUseCase,
+        deleteTaskUseCase: deleteTaskUseCase,
+        updateTaskUseCase: updateTaskUseCase,
+      ),
+    ),
   );
 }

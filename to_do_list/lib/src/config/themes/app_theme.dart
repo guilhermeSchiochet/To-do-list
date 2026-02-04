@@ -9,7 +9,7 @@ abstract class AppTheme {
         elevation: 0,
         color: Colors.white,
       ),
-      primaryColor: Colors.black,
+      primaryColor: primaryColor,
       splashColor: Colors.transparent,
       fontFamily: 'IBM',
       colorScheme: ColorScheme.fromSwatch(
@@ -38,7 +38,7 @@ abstract class AppTheme {
         color: Colors.black,
       ),
       scaffoldBackgroundColor: Colors.black,
-      primaryColor: Colors.black,
+      primaryColor: primaryColor,
       splashColor: Colors.transparent,
       fontFamily: 'IBM',
       colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black),
@@ -48,6 +48,10 @@ abstract class AppTheme {
   /// Utilizar em icones 
   static const Color cinzaEscuro = Color.fromARGB(255, 93, 90, 90);
   
+  static const Color cinzaUmPoucoMenosEscuro = Color.fromARGB(255, 117, 113, 113);
+
   /// Utilizar em titulos
   static const Color tituloPreto = Color.fromARGB(255, 34, 33, 33);
+  
+  static const Color primaryColor = Color.fromARGB(255, 0, 123, 255);
 }

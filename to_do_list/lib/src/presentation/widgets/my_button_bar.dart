@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:animations/animations.dart';
+import 'package:to_do_list/src/config/themes/app_theme.dart';
 
 class MyBottomBar extends StatelessWidget {
   final int selectedIndex;
@@ -10,73 +10,58 @@ class MyBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Pegamos as cores do tema atual para manter a consistência
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
-      height: 70,
+      height: 80,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor, // Usa a cor do seu AppTheme
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: isDark ? Colors.black54 : Colors.black12,
             blurRadius: 10,
-            offset: Offset(0, -2),
+            offset: const Offset(0, -2),
           ),
         ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _animatedIconButton(LucideIcons.home, 0),
-          _animatedIconButton(LucideIcons.calendar, 1),
-          _centerButton(context),
-          _animatedIconButton(LucideIcons.listTodo, 3),
-          _animatedIconButton(LucideIcons.user, 4),
+          _animatedIconButton(LucideIcons.home, 0, context),
+          _animatedIconButton(LucideIcons.calendar, 1, context),
+          _animatedIconButton(LucideIcons.listTodo, 3, context),
+          _animatedIconButton(LucideIcons.user, 4, context),
         ],
       ),
     );
   }
 
-  Widget _animatedIconButton(IconData icon, int index) {
+  Widget _animatedIconButton(IconData icon, int index, BuildContext context) {
     final isSelected = selectedIndex == index;
 
     return GestureDetector(
       onTap: () => onTap?.call(index),
-      child: FadeScaleTransition(
-        animation: AlwaysStoppedAnimation(1.0),
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 400),
-          padding: EdgeInsets.all(isSelected ? 16 : 12),
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-          ),
+      behavior: HitTestBehavior.opaque, // Melhora a área de toque
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            // Cria um efeito de escala suave ao trocar
+            return ScaleTransition(
+              scale: animation,
+              child: FadeTransition(opacity: animation, child: child),
+            );
+          },
+          // O 'ValueKey' é essencial para o AnimatedSwitcher saber que o estado mudou
           child: Icon(
             icon,
-            color: isSelected ? Colors.blue : Colors.grey,
-            size: isSelected ? 28 : 24,
+            key: ValueKey<bool>(isSelected), 
+            size: isSelected ? 30 : 26,
+            color: isSelected ? AppTheme.primaryColor : Colors.grey,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _centerButton(BuildContext context) {
-    return Container(
-      height: 56,
-      width: 56,
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blue.withOpacity(0.3),
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: IconButton(
-        icon: const Icon(Icons.add, color: Colors.white, size: 32),
-        onPressed: () => onTap?.call(2),
       ),
     );
   }

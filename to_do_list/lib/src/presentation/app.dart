@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/src/config/themes/app_theme.dart';
-import 'package:to_do_list/src/presentation/view/home_screen.view.dart';
+import 'package:to_do_list/src/presentation/screens/home_screen.view.dart';
 import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/delete_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
 import 'package:to_do_list/src/utils/constants/strings.dart';
+import 'package:to_do_list/src/utils/theme_controller.dart';
 
 class App extends StatelessWidget {
   final AddTaskUseCase addTaskUseCase;
@@ -20,15 +21,22 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: appTitle,
-      home: HomeScreenView(
-        addTaskUseCase: addTaskUseCase,
-        deleteTaskUseCase: deleteTaskUseCase,
-        updateTaskUseCase: updateTaskUseCase,
-      ),
-      theme: AppTheme.light,
-      debugShowCheckedModeBanner: false,
+    final controller = ThemeController();
+
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) => MaterialApp(
+        title: appTitle,
+        home: HomeScreenView(
+          addTaskUseCase: addTaskUseCase,
+          deleteTaskUseCase: deleteTaskUseCase,
+          updateTaskUseCase: updateTaskUseCase,
+        ),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: controller.theme,
+        debugShowCheckedModeBanner: false,
+      )
     );
   }
 }
