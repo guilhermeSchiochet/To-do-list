@@ -9,7 +9,7 @@ extension TaskPriorityExtension on TaskPriority {
       case TaskPriority.low:
         return 'Low';
       case TaskPriority.medium:
-        return 'Med';
+        return 'Medium';
       case TaskPriority.high:
         return 'High';
       default:
@@ -38,6 +38,17 @@ extension TaskPriorityExtension on TaskPriority {
         return Icons.indeterminate_check_box_outlined;
       default:
         return Icons.low_priority;
+    }
+  }
+
+  Alignment get alignment {
+    switch (this) {
+      case TaskPriority.low:
+        return Alignment.centerLeft;
+      case TaskPriority.medium:
+        return Alignment.center;
+      case TaskPriority.high:
+        return Alignment.centerRight;
     }
   }
 }
