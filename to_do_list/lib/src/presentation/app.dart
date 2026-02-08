@@ -5,6 +5,7 @@ import 'package:to_do_list/src/presentation/screens/home_screen.view.dart';
 import 'package:to_do_list/src/domain/useCases/add_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/delete_use_case.dart';
 import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
+import 'package:to_do_list/src/presentation/widgets/main_navigation.dart';
 import 'package:to_do_list/src/utils/constants/strings.dart';
 import 'package:to_do_list/src/utils/theme_controller.dart';
 
@@ -26,7 +27,7 @@ class App extends StatelessWidget {
 
     return ListenableBuilder(
       listenable: controller,
-      builder: (context, _) =>MaterialApp(
+      builder: (context, _) => MaterialApp(
         title: appTitle,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
@@ -34,7 +35,7 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => HomeScreenView(
+          '/': (context) => MainNavigationScreen(
             addTaskUseCase: addTaskUseCase,
             deleteTaskUseCase: deleteTaskUseCase,
             updateTaskUseCase: updateTaskUseCase,

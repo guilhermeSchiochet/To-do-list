@@ -10,13 +10,12 @@ class MyBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Pegamos as cores do tema atual para manter a consistência
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor, // Usa a cor do seu AppTheme
+        color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
             color: isDark ? Colors.black54 : Colors.black12,
@@ -40,25 +39,22 @@ class MyBottomBar extends StatelessWidget {
   Widget _animatedIconButton(IconData icon, int index, BuildContext context) {
     final isSelected = selectedIndex == index;
 
-    return GestureDetector(
+    return InkWell(
       onTap: () => onTap?.call(index),
-      behavior: HitTestBehavior.opaque, // Melhora a área de toque
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
           transitionBuilder: (Widget child, Animation<double> animation) {
-            // Cria um efeito de escala suave ao trocar
             return ScaleTransition(
               scale: animation,
               child: FadeTransition(opacity: animation, child: child),
             );
           },
-          // O 'ValueKey' é essencial para o AnimatedSwitcher saber que o estado mudou
           child: Icon(
             icon,
-            key: ValueKey<bool>(isSelected), 
             size: isSelected ? 30 : 26,
+            key: ValueKey<bool>(isSelected),
             color: isSelected ? AppTheme.primaryColor : Colors.grey,
           ),
         ),
