@@ -7,8 +7,7 @@ import 'package:to_do_list/src/domain/useCases/update_use_case.dart';
 import 'package:to_do_list/src/presentation/controller/home_screen.controller.dart';
 import 'package:to_do_list/src/presentation/widgets/my_app_bar.dart';
 import 'package:to_do_list/src/presentation/widgets/my_button_bar.dart';
-import 'package:animations/animations.dart';
-import 'package:to_do_list/src/presentation/widgets/task_list_widgets.dart';
+
 class HomeScreenView extends StatefulWidget {
   final AddTaskUseCase addTaskUseCase;
   final DeleteTaskUseCase deleteTaskUseCase;
@@ -42,21 +41,10 @@ class _HomeScreenState extends State<HomeScreenView> with SingleTickerProviderSt
     return Scaffold(
       appBar: _appBar(),
       body: _conteudo(),
-      bottomNavigationBar: _buttonBar(),
     );
   }
   
   MyAppBar _appBar() =>  const MyAppBar();
-
-  Widget _buttonBar() {
-    return ValueListenableBuilder(
-      valueListenable: _controller.selectedIndex,
-      builder: (context, value, child) => MyBottomBar(
-        selectedIndex: _controller.selectedIndex.value,
-        onTap: (index) => _controller.selectedIndex.value = index
-      ),
-    );
-  }
 
   /// Retorna o widget que representa o conteúdo principal da tela
   Widget _conteudo() {
@@ -66,6 +54,7 @@ class _HomeScreenState extends State<HomeScreenView> with SingleTickerProviderSt
         return Column(
           children: [
             const SizedBox(height: 30),
+            _buildButtonNewTask(),
             //_builderListProjects(),
             const SizedBox(height: 30),
             // Expanded(
@@ -75,6 +64,41 @@ class _HomeScreenState extends State<HomeScreenView> with SingleTickerProviderSt
         );
       },
     );
+  }
+
+  Widget _buildButtonNewTask() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: InkWell(
+        onTap: () => Navigator.pushNamed(context, '/add'),
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8
+          ),
+          child: Row(
+            children: [
+              SizedBox(width: 8),
+      
+              Icon(
+                Icons.add,
+                size: 18,
+                color: AppTheme.primaryColor
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Add New Task',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: AppTheme.primaryColor,
+                  fontWeight: FontWeight.w500
+                )
+              ), 
+            ],
+          ),
+        ),
+      ),
+    ) ;
   }
 
   // Widget _buildTaskListWidget(List<TaskModel> tasks) {

@@ -13,8 +13,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = preferredSize.height;
-
     return Container(
       height: preferredSize.height,
       color: Theme.of(context).appBarTheme.backgroundColor,
@@ -56,30 +54,15 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildIconNotification() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        IconButton(
-          icon: const Icon(
-            LucideIcons.bell,
-            size: 22,
-            color: AppTheme.cinzaEscuro,
-          ),
-          onPressed: () {},
+    return Badge(
+      child: IconButton(
+        icon: const Icon(
+          LucideIcons.bell,
+          size: 22,
+          color: AppTheme.cinzaEscuro,
         ),
-        Positioned(
-          top: 6,
-          right: 12,
-          child: Container(
-            width: 4,
-            height: 4,
-            decoration: const BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-            ),
-          ),
-        ),
-      ],
+        onPressed: () {},
+      )
     );
   }
 

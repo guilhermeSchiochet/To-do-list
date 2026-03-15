@@ -25,6 +25,7 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final ValueNotifier<int> selectedIndex = ValueNotifier(0);
+  final PageController controller = PageController();
 
   late final List<Widget> pages = [
     HomeScreenView(
@@ -32,6 +33,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       deleteTaskUseCase: widget.deleteTaskUseCase,
       updateTaskUseCase: widget.updateTaskUseCase,
     ),
+    const CalendarScreen(),
     const Placeholder(),
     const Placeholder(),
   ];
@@ -39,21 +41,25 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ValueListenableBuilder(
-        valueListenable: selectedIndex,
-        builder: (_, index, __) {
-          return IndexedStack(
-            index: index,
-            children: pages,
-          );
-        },
+      body: PageView(
+        controller: controller,
+        onPageChanged: (index) => selectedIndex.value = index,
+        children: pages,
       ),
+
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: selectedIndex,
         builder: (_, index, __) {
           return MyBottomBar(
             selectedIndex: index,
-            onTap: (select) => selectedIndex.value = select,
+            onTap: (i) {
+              selectedIndex.value = i;
+              controller.animateToPage(
+                i,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease,
+              );
+            },
           );
         },
       ),

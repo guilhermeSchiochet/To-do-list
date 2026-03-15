@@ -43,21 +43,12 @@ class MyBottomBar extends StatelessWidget {
       onTap: () => onTap?.call(index),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(
-              scale: animation,
-              child: FadeTransition(opacity: animation, child: child),
-            );
-          },
-          child: Icon(
-            icon,
-            size: isSelected ? 30 : 26,
-            key: ValueKey<bool>(isSelected),
-            color: isSelected ? AppTheme.primaryColor : Colors.grey,
-          ),
-        ),
+        child: Icon(
+          icon,
+          size: isSelected ? 30 : 26,
+          key: ValueKey<bool>(isSelected),
+          color: isSelected ? AppTheme.primaryColor : Colors.grey,
+        )
       ),
     );
   }

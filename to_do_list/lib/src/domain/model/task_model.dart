@@ -3,6 +3,7 @@ import 'package:to_do_list/src/utils/extensions/task_priority_extension.dart';
 class TaskModel {
   final String id;
   final String title;
+  final DateTime? dateTime;
   final String? description;
   final bool isCompleted;
   final TaskPriority priority;
@@ -11,6 +12,7 @@ class TaskModel {
     required this.id,
     required this.title,
     this.description,
+    this.dateTime,
     this.isCompleted = false,
     required this.priority,
   });
