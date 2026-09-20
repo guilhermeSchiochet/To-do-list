@@ -11,6 +11,9 @@ android {
     ndkVersion = "27.0.12077973"
 
     compileOptions {
+        // Exigido pelo flutter_local_notifications para usar a API de datas
+        // do Java 8 em versões antigas do Android.
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -37,6 +40,10 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 
 flutter {
