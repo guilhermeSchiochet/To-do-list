@@ -1,43 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list/src/config/themes/app_colors.dart';
+import 'package:to_do_list/src/utils/constants/app_strings.dart';
 
-enum TaskPriority {low, medium, high }
+/// Níveis de urgência de uma tarefa, em ordem crescente.
+/// A task's urgency levels, in ascending order.
+enum TaskPriority { low, medium, high }
 
 extension TaskPriorityExtension on TaskPriority {
+  /// Rótulo exibido no seletor de prioridade.
+  String get label => switch (this) {
+        TaskPriority.low => strings.priorityLow,
+        TaskPriority.medium => strings.priorityMedium,
+        TaskPriority.high => strings.priorityHigh,
+      };
 
-  String toShortString() {
-    switch (this) {
-      case TaskPriority.low:
-        return 'Low';
-      case TaskPriority.medium:
-        return 'Med';
-      case TaskPriority.high:
-        return 'High';
-      default:
-        return '';
-    }
-  }
-
-  Color get color {
-    switch (this) {
-      case TaskPriority.low:
-        return Colors.green;
-      case TaskPriority.medium:
-        return Colors.orange;
-      case TaskPriority.high:
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  IconData get icon {
-    switch (this) {
-      case TaskPriority.high:
-        return Icons.priority_high;
-      case TaskPriority.medium:
-        return Icons.indeterminate_check_box_outlined;
-      default:
-        return Icons.low_priority;
-    }
-  }
+  /// Cor do ponto indicador ao lado da tarefa.
+  Color get color => switch (this) {
+        TaskPriority.low => AppPalette.indigo,
+        TaskPriority.medium => AppPalette.yellow,
+        TaskPriority.high => AppPalette.red,
+      };
 }
