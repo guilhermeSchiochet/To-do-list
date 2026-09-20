@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "to_do_list" "\0"
+            VALUE "CompanyName", "Guilherme Schiochet" "\0"
+            VALUE "FileDescription", "To Do List" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "to_do_list" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
+            VALUE "InternalName", "To Do List" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Guilherme Schiochet. All rights reserved." "\0"
             VALUE "OriginalFilename", "to_do_list.exe" "\0"
-            VALUE "ProductName", "to_do_list" "\0"
+            VALUE "ProductName", "To Do List" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
