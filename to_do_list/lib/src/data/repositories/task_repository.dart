@@ -1,32 +1,27 @@
 import 'package:to_do_list/src/data/providers/task_provider.dart';
 import 'package:to_do_list/src/domain/model/task_model.dart';
 
-/// TaskRepository is responsible for connecting use cases with the data providers.
-/// O TaskRepository é responsável por conectar os use cases com os provedores de dados.
+/// Conecta os casos de uso aos provedores de dados.
+/// Connects the use cases to the data providers.
 class TaskRepository {
-  final TaskProvider _taskProvider = TaskProvider();
+  final TaskProvider _taskProvider;
 
-  /// Adds a task to the database.
+  TaskRepository({TaskProvider? taskProvider})
+      : _taskProvider = taskProvider ?? TaskProvider();
+
   /// Adiciona uma tarefa ao banco de dados.
-  Future<void> addTask(TaskModel task) async {
-    await _taskProvider.addTask(task);
-  }
+  /// Adds a task to the database.
+  Future<void> addTask(TaskModel task) => _taskProvider.addTask(task);
 
-  /// Retrieves all tasks from the database.
   /// Recupera todas as tarefas do banco de dados.
-  Future<List<TaskModel>> getAllTasks() async {
-    return await _taskProvider.getAllTasks();
-  }
+  /// Retrieves all tasks from the database.
+  Future<List<TaskModel>> getAllTasks() => _taskProvider.getAllTasks();
 
-  /// Updates a task in the database.
   /// Atualiza uma tarefa no banco de dados.
-  Future<void> updateTask(TaskModel task) async {
-    await _taskProvider.updateTask(task);
-  }
+  /// Updates a task in the database.
+  Future<void> updateTask(TaskModel task) => _taskProvider.updateTask(task);
 
-  /// Deletes a task from the database.
   /// Exclui uma tarefa do banco de dados.
-  Future<void> deleteTask(TaskModel task) async {
-    await _taskProvider.deleteTask(task.id);
-  }
+  /// Deletes a task from the database.
+  Future<void> deleteTask(TaskModel task) => _taskProvider.deleteTask(task.id);
 }

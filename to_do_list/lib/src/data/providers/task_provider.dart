@@ -1,44 +1,42 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:to_do_list/src/domain/model/task_model.dart';
 import 'package:to_do_list/src/data/providers/database_provider.dart';
+import 'package:to_do_list/src/domain/model/task_model.dart';
 
-// TaskProvider class to manage Task-related database operations
-// Classe TaskProvider para gerenciar operações do banco de dados relacionadas às tarefas
+/// Acesso à tabela `tasks`.
+/// Access to the `tasks` table.
 class TaskProvider {
-  // Instance of the DatabaseProvider
-  // Instância do DatabaseProvider
   final DatabaseProvider _databaseProvider = DatabaseProvider();
 
-  // Add a new task to the database
-  // Adicionar uma nova tarefa ao banco de dados
-  Future<int> addTask(TaskModel task) async {
+  /// Insere a tarefa, substituindo caso o id já exista.
+  /// Inserts the task, replacing it when the id already exists.
+  Future<void> addTask(TaskModel task) async {
     final db = await _databaseProvider.database;
 
-    return await db.insert(
+    await db.insert(
       'tasks',
       task.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  // Retrieve all tasks from the database
-  // Obter todas as tarefas do banco de dados
+  /// Retorna todas as tarefas, pendentes antes das concluídas e as mais
+  /// urgentes primeiro dentro de cada grupo.
   Future<List<TaskModel>> getAllTasks() async {
     final db = await _databaseProvider.database;
 
-    final List<Map<String, dynamic>> maps = await db.query('tasks');
+    final rows = await db.query(
+      'tasks',
+      orderBy: 'isCompleted ASC, dueDate IS NULL, dueDate ASC, '
+          'dueTimeMinutes IS NULL, dueTimeMinutes ASC, priority DESC',
+    );
 
-    return List.generate(maps.length, (i) {
-      return TaskModel.fromJson(maps[i]);
-    });
+    return rows.map(TaskModel.fromJson).toList();
   }
 
-  // Update an existing task in the database
-  // Atualizar uma tarefa existente no banco de dados
-  Future<int> updateTask(TaskModel task) async {
+  Future<void> updateTask(TaskModel task) async {
     final db = await _databaseProvider.database;
 
-    return await db.update(
+    await db.update(
       'tasks',
       task.toJson(),
       where: 'id = ?',
@@ -46,14 +44,9 @@ class TaskProvider {
     );
   }
 
-  // Delete a task from the database using its ID
-  // Excluir uma tarefa do banco de dados usando seu ID
-  Future<int> deleteTask(String id) async {
+  Future<void> deleteTask(String id) async {
     final db = await _databaseProvider.database;
-    return await db.delete(
-      'tasks',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+
+    await db.delete('tasks', where: 'id = ?', whereArgs: [id]);
   }
 }

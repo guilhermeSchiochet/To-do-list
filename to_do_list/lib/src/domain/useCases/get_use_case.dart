@@ -1,13 +1,13 @@
 import 'package:to_do_list/src/data/repositories/task_repository.dart';
 import 'package:to_do_list/src/domain/model/task_model.dart';
 
-/// Remove uma tarefa.
-/// Removes a task.
-class DeleteTaskUseCase {
+/// Lê todas as tarefas salvas.
+/// Reads every saved task.
+class GetTasksUseCase {
   final TaskRepository _repository;
 
-  DeleteTaskUseCase({required TaskRepository repository})
+  GetTasksUseCase({required TaskRepository repository})
       : _repository = repository;
 
-  Future<void> call(TaskModel task) => _repository.deleteTask(task);
+  Future<List<TaskModel>> call() => _repository.getAllTasks();
 }
